@@ -7,9 +7,6 @@ L_ARC creerLArc(){
 }
 
 L_ARC ajoutArc(L_ARC L, T_ARC A){
-  /*if (LArcEstVide(L)){
-    L = creerLArc();
-    }*/
   L_ARC n;
   n = (L_ARC) calloc(1, sizeof(*n));
   if (n==NULL) {
@@ -29,10 +26,10 @@ L_ARC copieLArc(L_ARC L1, L_ARC L2){//copie de L1 dans L2
   return L2;
 }
 
-int minimum(double *pcc, long int *C, int n){
+int minimum(double *pcc, int *C, int n){
   int i;
   double m = DBL_MAX;
-  int indice_m=-1;//Boooof
+  int indice_m=-1;
   for(i=0; i<n; i++){
     if (C[i] != -1){
       if (pcc[i] < m){
@@ -43,6 +40,7 @@ int minimum(double *pcc, long int *C, int n){
   }
   if(indice_m == -1){
     fprintf(stderr, "Erreur de minimum, liste vide ou chemin inexistant");
+    exit(1);
   }
   else{
     return indice_m;
@@ -54,7 +52,6 @@ int chercherSommet(T_SOMMET x, GRAPHE G){
   strcpy(nom, x.nom);
   int taille = G.n;
   for(i=0; i<taille; ++i){
-    //printf("%s %s\n", G.sommets[i].nom, nom);
     if (!strcmp(G.sommets[i].nom, nom))
       return i;
   }
@@ -69,7 +66,7 @@ int LArcEstVide(L_ARC L){
     return 0;
  }
 
-int appartient(long int *S, int a){
+int appartient(int *S, int a){
   if (S[a] == a){
     return 1;
   }
@@ -94,9 +91,9 @@ L_ARC plusCourtChemin(GRAPHE G, T_SOMMET d, T_SOMMET a){
       fprintf(stderr, "Erreur fatale, mémoire insuffisante pere");
       exit(1);
     }
-  long int *C = NULL;
-  long int *S = NULL;
-  C = calloc(taille, sizeof(*C));//en pratique un seul tableau necessaire et de int de surcroit !
+  int *C = NULL;
+  int *S = NULL;
+  C = calloc(taille, sizeof(*C));
   S = calloc(taille, sizeof(*C));
   if (C==NULL) {
       fprintf(stderr, "Erreur fatale, mémoire insuffisante");
@@ -104,31 +101,24 @@ L_ARC plusCourtChemin(GRAPHE G, T_SOMMET d, T_SOMMET a){
     }
   int i,j,k;
   double cout;
-  //printf("zouuuu\n");
+  L_ARC p;
+  
   for(i=0; i<taille; ++i){
-    //printf("truc\n");
-    //printf("%d\n", i);
     C[i] = i;
     S[i] = -1;
     pcc[i] = DBL_MAX;
     pere[i] = -1;
   }
-  //printf("ici !\n");
+  
   d_int = chercherSommet(d, G);
   a_int = chercherSommet(a, G);
-  //printf("D_INT A_INT: %d %d\n", d_int, a_int);
   pcc[d_int] = 0;  
   do{
-    //printf("là !\n");
     j = minimum(pcc, C, taille); 
-    //printf("%d \n", j);
     C[j] = -1;
     S[j] = j;
-    //printf("et là !\n");
-    L_ARC p;
     p = G.sommets[j].voisins;
     while(!LArcEstVide(p)){
-      //printf("coince ici !\n");
       k = p->val.arrivee;
       cout = p->val.cout;
       if (pcc[k] > pcc[j] + cout){

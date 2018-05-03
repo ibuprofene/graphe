@@ -1,25 +1,5 @@
 #include "graphe.h"
 #include "algo.h" 
-/*
-GRAPHE ajouterSommet(GRAPHE G, T_SOMMET sommet){
-  //G->n = G->n + 1;  
-}
-GRAPHE supprimerSommet(GRAPHE G, T_SOMMET sommet){
-}
-GRAPHE ajouterArc(GRAPHE G, T_SOMMET A, T_SOMMET B, int valeur){
-}
-GRAPHE supprimerArc(GRAPHE G, T_SOMMET A, T_SOMMET B){
-}
-int valeurArc(GRAPHE G, T_SOMMET A, T_SOMMET B){
-}
-int voisin(GRAPHE G, T_SOMMET A, T_SOMMET B){
-}
-T_SOMMET* voisinS(GRAPHE G, T_SOMMET A){
-}
-
-T_SOMMET* plusCourtChemin(GRAPHE G, T_SOMMET A, T_SOMMET B){
-}
-*/
 
 GRAPHE ouvrirGraphe(char *nom){
   FILE *fichier_graphe = fopen(nom, "r");
@@ -48,13 +28,11 @@ GRAPHE ouvrirGraphe(char *nom){
   for(i=0; i<nb_sommets; ++i){
     fgets(mot,511,fichier_graphe);
     fscanf(fichier_graphe, "%d %lf %lf %s %s", &numero, &latitude, &longitude, mot, nom_sommet);
-    //printf("%s\n", nom_sommet);
     G.sommets[i].x = latitude;
     G.sommets[i].y = longitude;
     G.sommets[i].nom = calloc(1, strlen(nom_sommet)*sizeof(char) + 1);
     if (nom_sommet[strlen(nom_sommet)-1]<32) nom_sommet[strlen(nom_sommet)-1]=0;
-    strcpy(G.sommets[i].nom, nom_sommet);//Attention au sens ! :p
-    //printf("%s\n", G.sommets[i].nom);
+    strcpy(G.sommets[i].nom, nom_sommet);
     //Note il faut aussi ajouter la lecture des stations de métro
     //ajouterSommet ...
   }
@@ -62,21 +40,14 @@ GRAPHE ouvrirGraphe(char *nom){
   for(i=0; i<nb_arcs; ++i){
     fgets(mot,511,fichier_graphe);
     fscanf(fichier_graphe, "%d %d %lf", &sommet_depart, &sommet_arrivee, &valeur);
-    /*L_ARC nouveau;
-    nouveau = calloc(1,sizeof(*nouveau));
-    
-    nouveau->val.cout = valeur;
-    nouveau->val.arrivee = sommet_arrivee;
-    nouveau->suiv = G.sommets[sommet_depart].voisins;*/
     T_ARC T;
-    //printf("Test de controle: %d %d %lf\n", sommet_depart, sommet_arrivee, valeur);
     T.cout = valeur;
     T.arrivee = sommet_arrivee;
     G.sommets[sommet_depart].voisins = ajoutArc(G.sommets[sommet_depart].voisins, T);
     
     /* /!\ CODE A FACTORISER ! /!\ */    
   }
-  fclose(fichier_graphe); //Libérer la mémoire !
+  fclose(fichier_graphe);
   return G;
 }
 

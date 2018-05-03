@@ -26,9 +26,6 @@ typedef struct {
   T_SOMMET *sommets;
 }GRAPHE;
 
-
-GRAPHE ajouterSommet(GRAPHE G, T_SOMMET sommet);
-GRAPHE supprimerSommet(GRAPHE G, T_SOMMET sommet);
 GRAPHE ajouterArc(GRAPHE G, T_SOMMET A, T_SOMMET B, int valeur);
 GRAPHE supprimerArc(GRAPHE G, T_SOMMET A, T_SOMMET B);
 int valeurArc(GRAPHE G, T_SOMMET A, T_SOMMET B);
@@ -37,6 +34,6 @@ T_SOMMET* voisinS(GRAPHE G, T_SOMMET A);
 GRAPHE ouvrirGraphe(char *nom);
 L_ARC plusCourtChemin(GRAPHE , T_SOMMET , T_SOMMET );
 void afficherGraphe(GRAPHE G);
-int appartient(long int *S, int a);
+int appartient(int *S, int a);
 void libererGraphe(GRAPHE G);
 #endif
