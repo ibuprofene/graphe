@@ -1,4 +1,3 @@
-
 #ifndef G_HEADERS
 #define G_HEADERS
 #include <stdio.h>

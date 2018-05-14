@@ -1,6 +1,43 @@
 #include "graphe.h"
 #include "algo.h" 
 
+GRAPHE ajouterCorrespondancesUneStation(GRAPHE G){
+  /*si deux lignes se croisent à une même station,
+    alors il faut ajouter un arc joignant les deux sommets
+    de coût 360*/
+  int nb_sommets;
+  G.n = nb_sommets;
+  int i, j;
+  for(i=0; i<nb_sommets; i++){
+    for(j=0; i<nb_sommets; j++){
+      if (!strcmp(G.sommets[i].nom, G.sommets[j].nom)){ // si chaînes identiques
+	ajouterArc(G, G.sommets[i], G.sommets[j], 360); //penser à mettre double dans graphe.h
+      }
+    }
+  }
+}
+
+GRAPHE ajouterChoixDepart(GRAPHE G, char* nom){
+  /*si plusieurs lignes passent par la station de départ
+    alors on relie les sommets correspondant à cette station
+    pour chaque ligne par un arc de poids nul*/
+  int nb_sommets;
+  G.n = nb_sommets;
+  T_SOMMET precedent;
+  T_SOMMET actuel; //je ne sais pas les initialiser
+  //precedent = calloc(1, sizeof(precedent));
+  //actuel = calloc(1, sizeof(actuel));
+  strcpy(actuel.nom, nom);
+  int i;
+  for(i=0; i<nb_sommets; i++){				
+    if (!strcmp(G.sommets[i].nom, nom)){ //si on trouve un arrêt de ce nom
+      precedent = actuel;
+      actuel = G.sommets[i];
+      if(!strcmp(precedent.nom, "")){ajouterArc(G, precedent, actuel, 0);} //si précédent est non nul, on le relie avec actuel
+    }
+  }
+}
+
 GRAPHE ouvrirGraphe(char *nom){
   FILE *fichier_graphe = fopen(nom, "r");
   if (fichier_graphe == NULL){
@@ -55,11 +92,9 @@ void afficherGraphe(GRAPHE G){
   int taille = G.n;
   int i;
   L_ARC p;
-  //printf("%d",taille);
   for(i = 0; i < taille; i++){
     printf("Sommet: %s\n", G.sommets[i].nom);
     p = G.sommets[i].voisins;
-    //printf("%d\n", LArcEstVide(p));
     while(!LArcEstVide(p)){
       printf("A pour voisin %d avec un cout de %lf\n", p->val.arrivee, p->val.cout);
       p = p->suiv;
