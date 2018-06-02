@@ -21,15 +21,13 @@ GRAPHE ajouterCorrespondancesUneStation(GRAPHE G){
   return G;
 }
 
-GRAPHE ajouterChoixDepart(GRAPHE G, char* nom){
+void ajouterChoixDepart(GRAPHE G, char* nom){
   /*si plusieurs lignes passent par la station de départ
     alors on relie les sommets correspondant à cette station
     pour chaque ligne par un arc de poids nul*/
   int nb_sommets;
   nb_sommets = G.n;
   T_ARC T;
-  //precedent = calloc(1, sizeof(precedent));
-  //actuel = calloc(1, sizeof(actuel));
   int i,j;
   for(i=0; i<nb_sommets; i++){
     for(j=0; j<nb_sommets && i!=j ; j++){
@@ -40,14 +38,13 @@ GRAPHE ajouterChoixDepart(GRAPHE G, char* nom){
       }
     }
   }
-  return G;
 }
 
 GRAPHE ouvrirGraphe(char *nom){
   FILE *fichier_graphe = fopen(nom, "r");
   if (fichier_graphe == NULL){
     fprintf(stderr, "Ouverture du fichier impossible");
-  } //compiler avec clang + MakeFile ! + plusieurs fichiers algo.c graphe.c main.c ++ run valgrind pour voir les memory leaks
+  }
   int nb_sommets;
   int nb_arcs;
   int i;
@@ -68,7 +65,6 @@ GRAPHE ouvrirGraphe(char *nom){
   G.sommets = calloc(nb_sommets, sizeof(T_SOMMET));
   
   for(i=0; i<nb_sommets; ++i){
-    //fgets(mot,511,fichier_graphe);
     fscanf(fichier_graphe, "%d %lf %lf %s", &numero, &latitude, &longitude, mot);
     fgets(nom_sommet, 511, fichier_graphe);
     G.sommets[i].x = latitude;
@@ -84,9 +80,6 @@ GRAPHE ouvrirGraphe(char *nom){
     }
     strcpy(G.sommets[i].nom, nom_sommet);
     strcpy(G.sommets[i].nom_station, mot);
-    //printf("%s\n", G.sommets[i].nom);
-    //Note il faut aussi ajouter la lecture des stations de métro
-    //ajouterSommet ...
   }
   fgets(mot,511,fichier_graphe);
   for(i=0; i<nb_arcs; ++i){
@@ -95,9 +88,7 @@ GRAPHE ouvrirGraphe(char *nom){
     T_ARC T;
     T.cout = valeur;
     T.arrivee = sommet_arrivee;
-    G.sommets[sommet_depart].voisins = ajoutArc(G.sommets[sommet_depart].voisins, T);
-    
-    /* /!\ CODE A FACTORISER ! /!\ */    
+    G.sommets[sommet_depart].voisins = ajoutArc(G.sommets[sommet_depart].voisins, T);  
   }
   fclose(fichier_graphe);
   return G;
@@ -131,7 +122,6 @@ void libererGraphe(GRAPHE G){
   int i;
   L_ARC p;
   for(i=0; i<G.n; ++i){
-    //printf("%d\n",i);
     free(G.sommets[i].nom);
     for(p=G.sommets[i].voisins;!LArcEstVide(p);p=p->suiv){
       supprimerTete(p);

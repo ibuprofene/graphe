@@ -36,4 +36,5 @@ L_ARC plusCourtChemin(GRAPHE , T_SOMMET , T_SOMMET );
 void afficherGraphe(GRAPHE G);
 int appartient(int *S, int a);
 void libererGraphe(GRAPHE G);
+void ajouterChoixDepart(GRAPHE G, char* nom);
 #endif

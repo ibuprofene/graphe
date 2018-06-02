@@ -1,27 +1,29 @@
 #include "graphe.h"
 #include "algo.h"
 
-int main(){
+int main(void){
   char nom[] = "grapheColorado.csv";
-  //char nom[] = "graphe1.txt";
   GRAPHE G;
   T_SOMMET d, a;
   L_ARC L;
-  /*d.nom = calloc(1, 4*sizeof(char));
-  a.nom = calloc(1, 4*sizeof(char));
-  d.nom = "Aaa";
-  a.nom = "Haa";*/
-  
+  int depart, arrivee;
   G = ouvrirGraphe(nom);
-  printf("Chargé !\n");
-  //afficherGraphe(G);
+  printf("Le graphe %s est chargé !\n",nom);
+  printf("Sommet de départ ?:\n");
+  //scanf(&depart); peu pratique pour chronométrer le programme
+  printf("Sommet d'arrivée ?:\n");
+  //scanf(&arrivee);
   d = G.sommets[5];
-  //a = G.sommets[10000];
-  a = G.sommets[50];
-  //printf("mais pk ?\n");
+  a = G.sommets[100];
+  /* Dans le cas des stations de métro il faut décommenter les trois lignes qui suivent
+  char depart_nom[100];
+  scanf("%s", depart_nom);
+  ajouterChoixDepart(G, depart_nom);
+  */
   L = plusCourtChemin(G, d, a);
   afficherChemin(L);
   printf("%lf\n", longueurChemin(L));
+  printf("%d", arrivee);
   libererGraphe(G);
   return 0;
 }
