@@ -19,7 +19,9 @@ int main(){
   //a = G.sommets[10000];
   a = G.sommets[50];
   //printf("mais pk ?\n");
-  plusCourtChemin(G, d, a);
+  L = plusCourtChemin(G, d, a);
+  afficherChemin(L);
+  printf("%lf\n", longueurChemin(L));
   libererGraphe(G);
   return 0;
 }

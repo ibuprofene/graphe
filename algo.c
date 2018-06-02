@@ -18,6 +18,17 @@ L_ARC ajoutArc(L_ARC L, T_ARC A){
   return n;
 }
 
+double chercherCout(L_ARC L, int sommet){//Combien cela coute-t-il d'aller au sommet ?
+   while(!LArcEstVide(L)){
+    if(L->val.arrivee == sommet){
+       return L->val.cout;
+    }
+    L = L->suiv;
+  }
+  fprintf(stderr, "Erreur sommet inexistant");
+  exit(1);
+}
+
 L_ARC copieLArc(L_ARC L1, L_ARC L2){//copie de L1 dans L2
   while(!LArcEstVide(L1)){
     L2 = ajoutArc(L2, L1->val);
@@ -74,12 +85,29 @@ int appartient(int *S, int a){
     return 0;
   }
 }
+
+double longueurChemin(L_ARC L){
+  double l = 0;
+  while(!LArcEstVide(L)){
+    l+=L->val.cout;
+    L = L->suiv;
+  }
+  return l;
+}
+
+void afficherChemin(L_ARC L){
+  while(!LArcEstVide(L)){
+    printf("%d\n",L->val.arrivee);
+    L = L->suiv;
+  }
+}
   
 L_ARC plusCourtChemin(GRAPHE G, T_SOMMET d, T_SOMMET a){
   int taille = G.n;
   int d_int;
   int a_int;
   double *pcc = NULL;
+  T_ARC arc;
   pcc = calloc(taille, sizeof(*pcc));
   if (pcc==NULL) {
       fprintf(stderr, "Erreur fatale, mémoire insuffisante pour pcc");
@@ -131,12 +159,15 @@ L_ARC plusCourtChemin(GRAPHE G, T_SOMMET d, T_SOMMET a){
   L_ARC resultat;
   resultat = calloc(1, sizeof(*resultat));  
   while(a_int != d_int){
-    printf("%d\n", pere[a_int]);
-    
+    //printf("%d\n", pere[a_int]);
+    arc.arrivee = pere[a_int];
+    arc.cout = chercherCout(G.sommets[a_int].voisins,pere[a_int]); 
+    resultat = ajoutArc(resultat, arc);
     a_int = pere[a_int];
   }
   free(pcc);
   free(pere);
   free(C);
   free(S);
+  return resultat;
 }

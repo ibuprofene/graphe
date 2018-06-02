@@ -9,4 +9,7 @@ int minimum(double *pcc, int *C, int n);
 int chercherSommet(T_SOMMET x, GRAPHE G);//Par son nom
 int LArcEstVide(L_ARC L);
 L_ARC plusCourtChemin(GRAPHE G, T_SOMMET d, T_SOMMET a);
+double chercherCout(L_ARC L, int sommet);
+double longueurChemin(L_ARC L);
+void afficherChemin(L_ARC L);
 #endif
