@@ -16,6 +16,7 @@ typedef struct lsucc{ //lsucc ?
 
 typedef struct {
   char *nom;
+  char *nom_station;
   double x,y;
   L_ARC voisins;
 }T_SOMMET;

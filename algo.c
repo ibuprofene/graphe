@@ -29,7 +29,7 @@ L_ARC copieLArc(L_ARC L1, L_ARC L2){//copie de L1 dans L2
 int minimum(double *pcc, int *C, int n){
   int i;
   double m = DBL_MAX;
-  int indice_m=-1;
+  int indice_m=-1;//a faire optimiser ceci ! 
   for(i=0; i<n; i++){
     if (C[i] != -1){
       if (pcc[i] < m){
@@ -128,9 +128,11 @@ L_ARC plusCourtChemin(GRAPHE G, T_SOMMET d, T_SOMMET a){
       p = p->suiv;
     }
   }while(!appartient(S, a_int) && pcc[j] != DBL_MAX);
-    
+  L_ARC resultat;
+  resultat = calloc(1, sizeof(*resultat));  
   while(a_int != d_int){
     printf("%d\n", pere[a_int]);
+    
     a_int = pere[a_int];
   }
   free(pcc);
